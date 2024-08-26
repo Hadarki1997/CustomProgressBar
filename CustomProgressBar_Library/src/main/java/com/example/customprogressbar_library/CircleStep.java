@@ -1,57 +1,108 @@
 package com.example.customprogressbar_library;
 
 import android.content.Context;
-import android.graphics.PorterDuff;
+import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
+import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 
-public class CircleStep extends LinearLayout {
+import com.google.android.material.progressindicator.CircularProgressIndicator;
 
-    private ProgressBar statusCircle;
-    private TextView statusText;
-    private TextView stepCount;
+public class CircleStep extends ConstraintLayout {
 
-    public CircleStep(Context context, AttributeSet attrs) {
+    private TextView titleTextView;
+    private TextView descriptionTextView;
+    private TextView statusTextView;
+    private TextView currentStepTextView;
+    private CircularProgressIndicator progressIndicator;
+    private Button previousButton;
+    private Button nextButton;
+
+    public enum StepStatus {
+        PROGRESSING, ERROR, WARNING
+    }
+
+    public CircleStep(@NonNull Context context) {
+        super(context);
+        init(context, null);
+    }
+
+    public CircleStep(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        init(context);
+        init(context, attrs);
     }
 
-    private void init(Context context) {
+    public CircleStep(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+        init(context, attrs);
+    }
+
+    private void init(Context context, AttributeSet attrs) {
         LayoutInflater.from(context).inflate(R.layout.circle_step_layout, this, true);
-        statusCircle = findViewById(R.id.status_circle);
-        statusText = findViewById(R.id.status_text);
-        stepCount = findViewById(R.id.step_count);
+
+        titleTextView = findViewById(R.id.titleTextView);
+        descriptionTextView = findViewById(R.id.descriptionTextView);
+        statusTextView = findViewById(R.id.statusTextView);
+        currentStepTextView = findViewById(R.id.currentStepTextView);
+        progressIndicator = findViewById(R.id.progressIndicator);
+        previousButton = findViewById(R.id.previousButton);
+        nextButton = findViewById(R.id.nextButton);
+
+        if (attrs != null) {
+            TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.CircleStep);
+            String title = a.getString(R.styleable.CircleStep_stepTitle);
+            String description = a.getString(R.styleable.CircleStep_stepDescription);
+            setTitle(title);
+            setDescription(description);
+            a.recycle();
+        }
     }
 
-    public void setStatus(String status, int step) {
-        stepCount.setText("Step " + step + " of 4");
+    public void setTitle(String title) {
+        titleTextView.setText(title);
+    }
+
+    public void setDescription(String description) {
+        descriptionTextView.setText(description);
+    }
+
+    public void setStepStatus(StepStatus status, int current, int total) {
+        statusTextView.setText("Status");
+        currentStepTextView.setText(String.format("%d of %d", current, total));
+        progressIndicator.setProgress((int) ((float) current / total * 100));
 
         int color;
-
-        switch (status.toLowerCase()) {
-            case "progressing":
-                color = ContextCompat.getColor(getContext(), R.color.blue);
-                break;
-            case "error":
+        switch (status) {
+            case ERROR:
                 color = ContextCompat.getColor(getContext(), R.color.red);
                 break;
-            case "warning":
+            case WARNING:
                 color = ContextCompat.getColor(getContext(), R.color.yellow);
                 break;
             default:
-                color = ContextCompat.getColor(getContext(), R.color.gray);
+                color = ContextCompat.getColor(getContext(), R.color.blue);
                 break;
         }
+        progressIndicator.setIndicatorColor(color);
+        titleTextView.setTextColor(color);
 
-        statusCircle.getProgressDrawable().setColorFilter(color, PorterDuff.Mode.SRC_IN);
-        statusCircle.setProgress(step * 25); // assuming each step is 25% progress
+        nextButton.setEnabled(status == StepStatus.PROGRESSING);
+        nextButton.setTextColor(status == StepStatus.PROGRESSING ?
+                ContextCompat.getColor(getContext(), R.color.circle_progress) :
+                ContextCompat.getColor(getContext(), R.color.disabled_text_color));
+    }
 
-        statusText.setText(status);
-        statusText.setTextColor(color);
+    public void setOnPreviousClickListener(OnClickListener listener) {
+        previousButton.setOnClickListener(listener);
+    }
+
+    public void setOnNextClickListener(OnClickListener listener) {
+        nextButton.setOnClickListener(listener);
     }
 }

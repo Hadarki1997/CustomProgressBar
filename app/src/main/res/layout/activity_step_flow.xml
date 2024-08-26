@@ -20,13 +20,6 @@
     <com.example.customprogressbar_library.StepFlow
         android:id="@+id/step_flow_warning"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"/>
-    <com.example.customprogressbar_library.StepFlow
-        android:id="@+id/step_flow_int"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"/>
-
+        android:layout_height="wrap_content"/>
 
 </LinearLayout>

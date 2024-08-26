@@ -1,87 +1,64 @@
 package com.example.customprogressbar_library;
 
 import android.content.Context;
-import android.graphics.PorterDuff;
+import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class StepFlow extends LinearLayout {
-    private List<String> steps;
-    private List<View> stepViews;
-    private int currentStep;
-    private String currentStatus;
 
-    public StepFlow(Context context) {
-        super(context);
-        init(context);
-    }
+    private static final int STEP_COUNT = 4;
+    private ProgressBar[] stepProgressBars;
+    private TextView[] stepLabels;
+    private View[] stepDots;
 
     public StepFlow(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(context);
     }
 
-    public StepFlow(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-        init(context);
-    }
-
     private void init(Context context) {
-        setOrientation(VERTICAL);
-        steps = new ArrayList<>();
-        stepViews = new ArrayList<>();
-    }
+        LayoutInflater.from(context).inflate(R.layout.step_flow_layout, this, true);
 
-    public void setSteps(List<String> newSteps) {
-        steps.clear();
-        steps.addAll(newSteps);
-        removeAllViews();
-        stepViews.clear();
+        stepProgressBars = new ProgressBar[STEP_COUNT];
+        stepLabels = new TextView[STEP_COUNT];
+        stepDots = new View[STEP_COUNT];
 
-        for (String step : steps) {
-            View stepView = LayoutInflater.from(getContext()).inflate(R.layout.step_flow_layout, this, false);
-            TextView stepLabel = stepView.findViewById(R.id.step_label);
-            stepLabel.setText(step);
-            stepViews.add(stepView);
-            addView(stepView);
+        for (int i = 0; i < STEP_COUNT; i++) {
+            stepProgressBars[i] = findViewById(getResources().getIdentifier("step_progress_" + (i + 1), "id", context.getPackageName()));
+            stepLabels[i] = findViewById(getResources().getIdentifier("step_label_" + (i + 1), "id", context.getPackageName()));
+            stepDots[i] = findViewById(getResources().getIdentifier("step_dot_" + (i + 1), "id", context.getPackageName()));
         }
-        updateStepViews();
     }
 
-    public void setCurrentStep(int step) {
-        this.currentStep = step;
-        updateStepViews();
+    public void setStatus(String status, int currentStep) {
+        int mainColor, errorColor, warningColor, inactiveColor;
+        mainColor = ContextCompat.getColor(getContext(), R.color.blue);
+        errorColor = ContextCompat.getColor(getContext(), R.color.red);
+        warningColor = ContextCompat.getColor(getContext(), R.color.yellow);
+        inactiveColor = ContextCompat.getColor(getContext(), R.color.gray);
+
+        updateSteps(status, currentStep, mainColor, errorColor, warningColor, inactiveColor);
     }
 
-    public void setStatus(String status) {
-        this.currentStatus = status;
-        updateStepViews();
-    }
-
-    private void updateStepViews() {
-        int mainColor = ContextCompat.getColor(getContext(), R.color.blue);
-        int errorColor = ContextCompat.getColor(getContext(), R.color.red);
-        int warningColor = ContextCompat.getColor(getContext(), R.color.yellow);
-        int inactiveColor = ContextCompat.getColor(getContext(), R.color.gray);
-
-        for (int i = 0; i < stepViews.size(); i++) {
-            View stepView = stepViews.get(i);
-            View stepDot = stepView.findViewById(R.id.step_dot);
-            View stepLine = stepView.findViewById(R.id.step_line);
-
+    private void updateSteps(String status, int currentStep, int mainColor, int errorColor, int warningColor, int inactiveColor) {
+        for (int i = 0; i < STEP_COUNT; i++) {
             if (i < currentStep) {
-                setStepColor(stepDot, stepLine, mainColor);
+                // Completed steps
+                stepProgressBars[i].setProgress(100);
+                stepProgressBars[i].getProgressDrawable().setColorFilter(mainColor, android.graphics.PorterDuff.Mode.SRC_IN);
+                stepDots[i].getBackground().setColorFilter(mainColor, android.graphics.PorterDuff.Mode.SRC_IN);
             } else if (i == currentStep) {
+                // Current step
+                stepProgressBars[i].setProgress(100);
                 int color;
-                switch (currentStatus != null ? currentStatus.toLowerCase() : "") {
+                switch (status.toLowerCase()) {
                     case "error":
                         color = errorColor;
                         break;
@@ -92,25 +69,20 @@ public class StepFlow extends LinearLayout {
                         color = mainColor;
                         break;
                 }
-                setStepColor(stepDot, stepLine, color);
+                stepProgressBars[i].getProgressDrawable().setColorFilter(color, android.graphics.PorterDuff.Mode.SRC_IN);
+                stepDots[i].getBackground().setColorFilter(color, android.graphics.PorterDuff.Mode.SRC_IN);
             } else {
-                setStepColor(stepDot, stepLine, inactiveColor);
-            }
-
-            if (i == stepViews.size() - 1) {
-                stepLine.setVisibility(GONE);
+                // Future steps
+                stepProgressBars[i].setProgress(100);
+                stepProgressBars[i].getProgressDrawable().setColorFilter(inactiveColor, android.graphics.PorterDuff.Mode.SRC_IN);
+                stepDots[i].getBackground().setColorFilter(inactiveColor, android.graphics.PorterDuff.Mode.SRC_IN);
             }
         }
     }
 
-    private void setStepColor(View dot, View line, int color) {
-        if (dot.getBackground() != null) {
-            dot.getBackground().setColorFilter(color, PorterDuff.Mode.SRC_IN);
+    public void setStepLabel(int stepIndex, String label) {
+        if (stepIndex >= 0 && stepIndex < STEP_COUNT) {
+            stepLabels[stepIndex].setText(label);
         }
-        line.setBackgroundColor(color);
-    }
-
-    public int getCurrentStep() {
-        return currentStep;
     }
 }

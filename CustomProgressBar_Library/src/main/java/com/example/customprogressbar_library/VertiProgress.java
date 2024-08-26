@@ -39,7 +39,6 @@ public class VertiProgress extends LinearLayout {
         updateColorAndIcon(internalStatus);
     }
 
-    // שמירה על המתודה הקיימת לתאימות לאחור
     public void setStatus(String status, int percentage) {
         setStatus(status, percentage, status);
     }

@@ -13,4 +13,8 @@
             <enum name="completed" value="3"/>
         </attr>
     </declare-styleable>
+    <declare-styleable name="CircleStep">
+        <attr name="stepTitle" format="string" />
+        <attr name="stepDescription" format="string" />
+    </declare-styleable>
 </resources>

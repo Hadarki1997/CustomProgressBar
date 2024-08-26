@@ -72,19 +72,16 @@ public class TrackLine extends LinearLayout {
 
         for (int i = 0; i < STEP_COUNT; i++) {
             if (i < completedSteps - 1) {
-                // צעדים שהושלמו
                 stepIcons[i].setImageResource(R.drawable.ic_levle_succeeded);
                 if (i > 0) {
                     connectors[i - 1].setBackgroundColor(ContextCompat.getColor(getContext(), R.color.blue));
                 }
             } else if (i == completedSteps - 1) {
-                // הצעד הנוכחי
                 stepIcons[i].setImageResource(activeIconResource);
                 if (i > 0) {
                     connectors[i - 1].setBackgroundColor(connectorColor);
                 }
             } else {
-                // צעדים עתידיים
                 stepIcons[i].setImageResource(R.drawable.ic_empty);
                 if (i > 0) {
                     connectors[i - 1].setBackgroundColor(ContextCompat.getColor(getContext(), R.color.gray));

@@ -13,24 +13,21 @@ public class StepFlowActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_step_flow);
 
-        List<String> steps = Arrays.asList("Checkout", "Shipping", "Payment", "Confirm");
-
-        StepFlow stepFlowInitial = findViewById(R.id.step_flow_initial);
-        setupStepFlow(stepFlowInitial, steps, "initial", 0);
-
         StepFlow stepFlowProgressing = findViewById(R.id.step_flow_progressing);
-        setupStepFlow(stepFlowProgressing, steps, "progressing", 2);
+        setupStepFlow(stepFlowProgressing, "progressing", 2);
 
         StepFlow stepFlowError = findViewById(R.id.step_flow_error);
-        setupStepFlow(stepFlowError, steps, "error", 2);
+        setupStepFlow(stepFlowError, "error", 2);
 
         StepFlow stepFlowWarning = findViewById(R.id.step_flow_warning);
-        setupStepFlow(stepFlowWarning, steps, "warning", 2);
+        setupStepFlow(stepFlowWarning, "warning", 2);
     }
 
-    private void setupStepFlow(StepFlow stepFlow, List<String> steps, String status, int currentStep) {
-        stepFlow.setSteps(steps);
-        stepFlow.setStatus(status);
-        stepFlow.setCurrentStep(currentStep);
+    private void setupStepFlow(StepFlow stepFlow, String status, int currentStep) {
+        stepFlow.setStepLabel(0, "Checkout");
+        stepFlow.setStepLabel(1, "Shipping");
+        stepFlow.setStepLabel(2, "Payment");
+        stepFlow.setStepLabel(3, "Confirm");
+        stepFlow.setStatus(status, currentStep);
     }
 }
