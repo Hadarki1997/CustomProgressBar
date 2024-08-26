@@ -1,0 +1,30 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <Button
+        android:id="@+id/btnVertiProgress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Verti Progress" />
+
+    <Button
+        android:id="@+id/btnTrackLine"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Track Line" />
+
+    <Button
+        android:id="@+id/btnStepFlow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Step Flow" />
+
+    <Button
+        android:id="@+id/btnCircleStep"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Circle Step" />
+</LinearLayout>

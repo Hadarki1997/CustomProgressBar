@@ -1,0 +1,23 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <com.example.customprogressbar_library.CircleStep
+        android:id="@+id/circleStepProgressing"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp" />
+
+    <com.example.customprogressbar_library.CircleStep
+        android:id="@+id/circleStepError"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp" />
+
+    <com.example.customprogressbar_library.CircleStep
+        android:id="@+id/circleStepWarning"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+</LinearLayout>
