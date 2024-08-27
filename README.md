@@ -5,7 +5,7 @@ This library provides a set of customizable progress bars for Android applicatio
 
 ## 🔧 Prerequisites
 - Android Studio
-- Minimum SDK version: API 21 (Android 5.0 Lollipop)
+- Minimum SDK version: API 26 (Android 8.0)
 - Java Development Kit (JDK)
   
 ## 📚 External Libraries
@@ -69,10 +69,6 @@ The library includes four types of progress bars:
 VertiProgress vertiProgress = findViewById(R.id.vertiProgress);
 vertiProgress.setStatus("Completed", 100, "Task Finished");
 ```
-## 🖼️ Examples:
-![VertiProgress Example](path_to_your_image/verti_progress_example.png)
-
-
 **CircleStep** 
 
 `CircleStep` displays steps in a process with a circular indicator.
@@ -135,6 +131,6 @@ stepFlow.setCurrentStep(1);
 ### 🤝 Contributing
 Hadar givoni
 
-###  Demo
+### 🖼️ Demo
 https://github.com/user-attachments/assets/785c423b-de9d-430a-8b8f-28bb6a18bdd0
 
