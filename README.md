@@ -7,6 +7,16 @@ This library provides a set of customizable progress bars for Android applicatio
 - Android Studio
 - Minimum SDK version: API 21 (Android 5.0 Lollipop)
 - Java Development Kit (JDK)
+  
+## 📚 External Libraries
+
+This project utilizes the following external libraries:
+
+- AndroidX AppCompat: For backward compatibility and modern Android features
+- AndroidX ConstraintLayout: For flexible and responsive UI layouts
+- Google Material Design: For modern, standardized UI components including CircularProgressIndicator
+
+These libraries are included as dependencies in the project's `build.gradle` file.
 
 ## 🚀 Installation
 
